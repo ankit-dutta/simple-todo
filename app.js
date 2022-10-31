@@ -1,5 +1,6 @@
 let form = document.getElementById('addForm');
 let itemList = document.getElementById('items');
+let filter = document.getElementById('filter');
 
 // Form submit event
 form.addEventListener('submit',additem);
@@ -10,6 +11,10 @@ itemList.addEventListener('click',remove);
 // Edit event
 itemList.addEventListener('click',edit);
 
+//filter event
+filter.addEventListener('keyup',filteritems)
+
+
 // Add items
 function additem(e){
     
@@ -17,6 +22,14 @@ function additem(e){
     
     // Get input value
     let newitem = document.getElementById('item').value;
+    let newitem2 = document.getElementById('item2').value;
+    //  console.log(newitem2)
+
+     // checking my input is blank or not if blank then return 
+        if(newitem == "" && newitem2 == ""){
+            alert("Enter The Item Name");
+            return;
+        }
 
 
     // Create new li element
@@ -24,8 +37,8 @@ function additem(e){
     // Add class 
     li.className = 'list-group-item';
     // Add text with input value
-    li.appendChild(document.createTextNode(newitem));
-
+    li.appendChild(document.createTextNode(newitem +" "+newitem2));
+    
      //create edit button
      let editbtn = document.createElement('button');
      // Add class to delete button
@@ -48,7 +61,7 @@ function additem(e){
 
     //  append li to list
     itemList.appendChild(li);
-
+   
 }
 
 //Remove function
@@ -68,4 +81,22 @@ function edit(e){
         editli.contentEditable = true;
         // console.log(editli)
     }
+}
+
+//Filter items
+
+function filteritems(e){
+    //convert text to lower case
+    let text = e.target.value.toLowerCase();
+    //Get list
+    let items = itemList.getElementsByTagName('li')
+    //convert to an array
+    Array.from(items).forEach(function(item){
+        let itemname = item.firstChild.textContent;
+        if(itemname.toLowerCase().indexOf(text) != -1){
+            item.style.display = 'block';
+        } else {
+            item.style.display = "none"
+        }
+    })
 }
